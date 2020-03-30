@@ -1,0 +1,105 @@
+#include <iostream>
+#include <windows.h>
+
+using namespace std;
+
+struct ABIT {
+    char name[15];
+    char group[15];
+    short ses[5];
+    short sesrez;
+    void input()
+    {
+        cout << endl << "Ім'я : ";
+        cin.get();
+        cin.getline(name, 14, '\n');
+        cout << endl << "Група : ";
+        cin.getline(group, 14, '\n');
+        for (int j = 0; j < 5; j++)
+        {
+            cout << endl << j + 1 << " Екзамен : ";
+            cin >> ses[j];
+        }
+        sesrez = (ses[0] + ses[1] + ses[2] + ses[3] + ses[4]) / 5;
+    }
+    void output()
+    {
+        if (sesrez >= 4) {
+            cout << endl << "Студент " << name << " з групи " << group << " має середній бал екзаменів вищий за 4.0" << endl;
+        }
+    }
+
+}stud[100];
+
+void OutAll(int i) {
+    for (int j = 0; j < i; j++) {
+        stud[j].output();
+    }
+}
+
+void FindD(int i) {
+    char Dest[10];
+    cin.get();
+    cin.getline(Dest, '\n', 10);
+    for (int j = 0; j < i; j++) {
+        if (strcmp(Dest, stud[j].name) == 0) stud[j].output();
+    }
+}
+
+void FindN(int i) {
+    char Gr[15];
+    cin.get();
+    cin.getline(Gr, '\n', 14);
+    for (int j = 0; j < i; j++) {
+        if (strcmp(Gr, stud[j].group) == 0) stud[j].output();
+    }
+}
+
+void FindT(int i) {
+    int c;
+    cin >> c;
+    for (int j = 0; j < i; j++) {
+        if (c == stud[j].sesrez) stud[j].output();
+    }
+}
+
+void Find(int i) {
+    cout << "\n1 для Dest, 2 для номеру, 3 для типу";
+    int c;
+    cin >> c;
+    switch (c) {
+    case 1: FindD(i);
+    case 2: FindN(i);
+    case 3: FindT(i);
+    }
+}
+
+void Delete(int i, int Ch) {
+    for (; Ch < i; Ch++) {
+        stud[Ch] = stud[Ch + 1];
+    }
+}
+
+int menu() {
+    int Choice, i = 0, Z = 0;
+    do {
+        cout << "1 Вести данні \n2 Вивести всі данні \n3 Пошук \n4 Видалити елемент \n0 Кінець програми";
+        cin >> Choice;
+        switch (Choice) {
+        case 1:stud[i].input(); i++; break;
+        case 2: OutAll(i); break;
+        case 3: Find(i); break;
+        case 4: cout << "\nЯкий елемент ви бажаєте видалити? "; cin >> Z; Delete(i, Z); break;
+        case 0: return 0; break;
+        default: cout << "Спробуйте ще раз"; break;
+        }
+    } while (true);
+}
+
+int main()
+{
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    menu();
+    return 0;
+}
